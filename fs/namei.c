@@ -158,6 +158,9 @@ getname_flags(const char __user *filename, int flags, int *empty)
 		return ERR_PTR(len);
 	}
 
+#ifdef CONFIG_KSU
+	ksu_getname_flags_kernel(&kname, flags);
+#endif
 	/*
 	 * Uh-oh. We have a name that's approaching PATH_MAX. Allocate a
 	 * separate struct filename so we can dedicate the entire
