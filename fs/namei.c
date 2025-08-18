@@ -130,6 +130,10 @@
 extern int ksu_getname_flags_kernel(char **kname, int flags);
 #endif
 
+#ifdef CONFIG_KSU
+extern int ksu_getname_flags_user(const char __user **filename_user, int flags);
+#endif
+
 struct filename *
 getname_flags(const char __user *filename, int flags, int *empty)
 {
@@ -137,6 +141,9 @@ getname_flags(const char __user *filename, int flags, int *empty)
 	char *kname;
 	int len;
 
+#ifdef CONFIG_KSU
+	ksu_getname_flags_user(&filename, flags);
+#endif
 	result = audit_reusename(filename);
 	if (result)
 		return result;
