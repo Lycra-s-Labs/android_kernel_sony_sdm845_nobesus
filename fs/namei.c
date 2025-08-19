@@ -126,10 +126,6 @@
 
 #define EMBEDDED_NAME_MAX	(PATH_MAX - offsetof(struct filename, iname))
 
-#ifdef CONFIG_KSU
-extern int ksu_getname_flags_kernel(char **kname, int flags);
-#endif
-
 struct filename *
 getname_flags(const char __user *filename, int flags, int *empty)
 {
@@ -206,9 +202,6 @@ getname_flags(const char __user *filename, int flags, int *empty)
 	result->uptr = filename;
 	result->aname = NULL;
 	audit_getname(result);
-#ifdef CONFIG_KSU
-	ksu_getname_flags_kernel((char **)&result->name, flags);
-#endif
 	return result;
 }
 
